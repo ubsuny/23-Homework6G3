@@ -165,6 +165,27 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
         root_print_header("Bisection Search", accuracy)
         root_print_step(step, x_mid, dx, f_mid)
         iterations.append([x_mid,f_mid])
+    while abs(dx) > accuracy:
+        if f_mid == 0.0:
+            dx = 0.0
+        else:
+            if f1 * f_mid > 0:
+                x1 = x_mid
+                f1 = f_mid
+            else:
+                x2 = x_mid
+                f2 = f_mid
+            x_mid = (x1 + x2) / 2.0
+            f_mid = f(x_mid)
+            dx = x2 - x1
+        step += 1
+        if step > max_steps:
+            warning = "Too many steps (" + repr(step) + ") in root_bisection"
+            raise Exception(warning)
+        if root_debug:
+            root_print_step(step, x_mid, dx, f_mid)
+            iterations.append([x_mid,f_mid])
+    return x_mid,np.array(iterations)
 
 def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False):
     """Return root of f(x) given guesses x0 and x1 with specified accuracy.
