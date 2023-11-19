@@ -3,7 +3,6 @@ import sys
 import cmath
 import numpy as np
 
-
 def simpson(f, a, b, n):
     """Approximates the definite integral of the given function using composite Simpson's rule.
 
