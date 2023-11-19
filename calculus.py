@@ -145,4 +145,34 @@ def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False):
             iterations.append([x1, f1])
     return x1, np.array(iterations)
 
-
+def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
+    """Return root of f(x) with derivative fp = df(x)/dx
+    given initial guess x0, with specified accuracy.
+    Uses Newton-Raphson (tangent) root-finding algorithm.
+    """
+    iterations = []
+    f0 = f(x0)
+    fp0 = fp(x0)
+    if fp0 == 0.0:
+        raise Exception(" root_tangent df/dx = 0 algorithm fails")
+    dx = -f0 / fp0
+    step = 0
+    if root_debug:
+        iterations.append([x0, f0])
+    if f0 == 0.0:
+        return x0
+    while True:
+        fp0 = fp(x0)
+        if fp0 == 0.0:
+            raise Exception(" root_tangent df/dx = 0 algorithm fails")
+        dx = -f0 / fp0
+        x0 += dx
+        f0 = f(x0)
+        if abs(dx) <= accuracy or f0 == 0.0:
+            return x0
+        step += 1
+        if step > max_steps:
+            root_max_steps("root_tangent", max_steps)
+        if root_debug:
+            iterations.append([x0, f0])
+    return x0
