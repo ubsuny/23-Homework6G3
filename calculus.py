@@ -1,7 +1,8 @@
-import numpy as np
 import math
 import sys
 import cmath
+import numpy as np
+
 
 def simpson(f, a, b, n):
     """Approximates the definite integral of the given function using composite Simpson's rule.
@@ -70,3 +71,11 @@ def adaptive_trapezoid(f, a, b, acc, output=False):
         if output:
             print("Number of Subintervals (N) = " + str(n) + ", Approximate Integral = " + str(h * s))
     return h * s
+
+def root_print_header(algorithm, accuracy):
+    sys.stdout.write("\n ROOT FINDING using " + algorithm +
+                     "\n Requested accuracy = " +repr(accuracy) +
+                     "\n Step     Guess For Root          Step Size      " +
+                     "     Function Value" +
+                     "\n ----  --------------------  --------------------" +
+                     "  --------------------" + "\n")
