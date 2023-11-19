@@ -90,5 +90,30 @@ def root_max_steps(algorithm, max_steps):
     raise Exception(" " + algorithm + ": maximum number of steps " +
                     repr(max_steps) + " exceeded\n")
 
+def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
+    """Return root of f(x) given guess x and step dx with specified accuracy.
+    Step must be in direction of root: dx must have same sign as (root - x).
+    """
+    f0 = f(x)
+    fx = f0
+    step = 0
+    iterations = []
+    if root_debug:        
+        root_print_header("Simple Search with Step Halving", accuracy)
+        root_print_step(step, x, dx, f0)
+        iterations.append([x,f0])
+    while abs(dx) > abs(accuracy) and f0 != 0.0:
+        x += dx
+        fx = f(x)
+        if f0 * fx < 0.0:   # stepped past root
+            x -= dx         # step back
+            dx /= 2.0       # use smaller step
+        step += 1
+        if step > max_steps:
+            root_max_steps("root_simple", max_steps)
+        if root_debug:
+            root_print_step(step, x, dx, fx)
+            iterations.append([x,fx])
+    return x,np.array(iterations)
 
 
