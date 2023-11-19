@@ -1,5 +1,7 @@
 import numpy as np
-
+import math
+import sys
+import cmath
 
 def simpson(f, a, b, n):
     """Approximates the definite integral of f from a to b by
