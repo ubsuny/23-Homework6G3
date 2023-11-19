@@ -79,3 +79,10 @@ def root_print_header(algorithm, accuracy):
                      "     Function Value" +
                      "\n ----  --------------------  --------------------" +
                      "  --------------------" + "\n")
+    
+def root_print_step(step, x, dx, f_of_x):
+    sys.stdout.write(repr(step).rjust(5))
+    for val in [x, dx, f_of_x]:
+        sys.stdout.write("  " + repr(val).ljust(20))
+    sys.stdout.write("\n")
+
