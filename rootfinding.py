@@ -1,12 +1,4 @@
 #!/usr/bin/env python
-
-import math
-import sys
-import cmath
-import numpy as np
-
-#!/usr/bin/env python
-
 import math
 import sys
 import cmath
@@ -189,8 +181,36 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
     return x_mid,np.array(iterations), step
 
 def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20,root_debug=False):
-    """Return root of f(x) given guesses x0 and x1 with specified accuracy.
-    Uses secant root-finding algorithm.
+    """Returns the root of f(x) given two guesses x0 and x1 with specified accuracy.
+
+    Parameters
+    ----------
+    f : function
+        The function to find the root of.
+    x0 : float
+        The first guess for the root.
+    x1 : float
+        The second guess for the root.
+    accuracy : float, optional
+        The requested accuracy for the root finding process. Default is 1.0e-6.
+    max_steps : int, optional
+        The maximum number of steps allowed. Default is 20.
+    root_debug : bool, optional
+        Whether to print the information for each step. Default is False.
+
+    Returns
+    -------
+    x1 : float
+        The final guess for the root.
+    iterations : numpy.array
+        An array of the guesses and function values for each step.
+    num_steps : int
+        The number of steps taken.
+
+    Raises
+    ------
+    Exception
+        When f(x0) = f(x1) or when the maximum number of steps is exceeded.
     """
     iterations=[]
     f0 = f(x0)
@@ -223,9 +243,38 @@ def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20,root_debug=False):
     return x1, np.array(iterations), num_steps # Return the final outputs
 
 def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
-    """Return root of f(x) with derivative fp = df(x)/dx
-    given initial guess x0, with specified accuracy.
+    """Returns the root of f(x) with derivative fp = df(x)/dx
+    given an initial guess x0, with specified accuracy.
     Uses Newton-Raphson (tangent) root-finding algorithm.
+
+    Parameters
+    ----------
+    f : function
+        The function to find the root of.
+    fp : function
+        The derivative of the function f.
+    x0 : float
+        The initial guess for the root.
+    accuracy : float, optional
+        The requested accuracy for the root finding process. Default is 1.0e-6.
+    max_steps : int, optional
+        The maximum number of steps allowed. Default is 20.
+    root_debug : bool, optional
+        Whether to print the information for each step. Default is False.
+
+    Returns
+    -------
+    x0 : float
+        The final guess for the root.
+    iterations : numpy.array
+        An array of the guesses and function values for each step.
+    num_steps : int
+        The number of steps taken.
+
+    Raises
+    ------
+    Exception
+        When fp(x0) = 0 or when the maximum number of steps is exceeded.
     """
     iterations = []
     f0 = f(x0)
