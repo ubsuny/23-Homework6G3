@@ -27,3 +27,10 @@ class TestCalculusFunctions(unittest.TestCase):
         result = trapezoid(f, 0, 1, 1000)
         self.assertAlmostEqual(result, 1/3, places=5)
 
+    def test_adaptive_trapezoid(self):
+        """Test the adaptive_trapezoid function with a known integral."""
+        f = lambda x: x**2
+        result = adaptive_trapezoid(f, 0, 1, 1e-6)
+        self.assertAlmostEqual(result, 1/3, places=5)
+
+
