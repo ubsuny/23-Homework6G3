@@ -20,3 +20,10 @@ class TestCalculusFunctions(unittest.TestCase):
         f = lambda x: x**2
         result = simpson(f, 0, 1, 1000)
         self.assertAlmostEqual(result, 1/3, places=5)
+
+    def test_trapezoid(self):
+        """Test the trapezoid function with a known integral."""
+        f = lambda x: x**2
+        result = trapezoid(f, 0, 1, 1000)
+        self.assertAlmostEqual(result, 1/3, places=5)
+
