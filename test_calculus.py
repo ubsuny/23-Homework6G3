@@ -1,28 +1,26 @@
 """
-test_calculus.py
-
-This module provides unit tests for the calculus module.
-
+ test_calculus.py : This module provides unit tests for the calculus module.
 """
-from typing import Self
+
 import unittest
 import sys
 from io import StringIO
-#from unittest.mock import patch
-import math
-import numpy as np
 from calculus import (
-    simpson, trapezoid, adaptive_trapezoid, 
-    root_simple, root_bisection, root_secant, 
-    root_tangent, root_print_header, root_print_step, root_max_steps
+    simpson, trapezoid, adaptive_trapezoid,
+    root_simple, root_bisection, root_secant,
+    root_tangent, root_print_header
 )
 
 class TestCalculusFunctions(unittest.TestCase):
+    """
+    Test various functions from the calculus module.
+    """
 
     def test_simpson_known_integral(self):
         """Test the simpson function with a known integral."""
         # Define the integrand function
-        f = lambda x: x**2
+        def f(x):
+            return x**2
 
         # Integration limits
         a = 0
@@ -40,18 +38,17 @@ class TestCalculusFunctions(unittest.TestCase):
         # Check if the result is close to the expected integral
         self.assertAlmostEqual(result, expected_integral, places=5)
 
-    
-
     def test_trapezoid_known_integral(self):
         """Test the trapezoid function with a known integral."""
-    
+
         # Define the integrand function
-        f = lambda x: x**3
+        def f(x):
+            return x**3
 
         # Integration limits
         a = 0
         b = 1
-  
+
         # Number of subintervals
         n = 100
 
@@ -64,12 +61,11 @@ class TestCalculusFunctions(unittest.TestCase):
         # Check if the result is close to the expected integral
         self.assertAlmostEqual(result, expected_integral, places=3)   # Adjust places as needed
 
-
-
     def test_adaptive_trapezoid_known_integral(self):
         """Test the adaptive_trapezoid function with a known integral."""
         # Define the integrand function
-        f = lambda x: x**2
+        def f(x):
+            return x**2
 
         # Integration limits
         a = 0
@@ -87,7 +83,8 @@ class TestCalculusFunctions(unittest.TestCase):
     def test_root_simple_known_root(self):
         """Test the root_simple function with a known root."""
         # Define the function
-        f = lambda x: x**2 - 4
+        def f(x):
+            return x**2 - 4
 
         # Initial guess and step size
         x = 1.0
@@ -105,7 +102,8 @@ class TestCalculusFunctions(unittest.TestCase):
     def test_root_bisection_known_root(self):
         """Test the root_bisection function with a known root."""
         # Define the function
-        f = lambda x: x**2 - 4
+        def f(x):
+            return x**2 - 4
 
         # Initial interval containing the root
         x1 = 0
@@ -123,7 +121,8 @@ class TestCalculusFunctions(unittest.TestCase):
     def test_root_secant_known_root(self):
         """Test the root_secant function with a known root."""
         # Define the function
-        f = lambda x: x**2 - 4
+        def f(x):
+            return x**2 - 4
 
         # Initial guesses
         x0 = 1.0
@@ -138,13 +137,14 @@ class TestCalculusFunctions(unittest.TestCase):
         # Check if the result is close to the expected root
         self.assertAlmostEqual(result, expected_root, places=5)
 
-    
     def test_root_tangent_known_root(self):
         """Test the root_tangent function with a known root."""
-    
         # Define the function and its derivative
-        f = lambda x: x**2 - 4
-        fp = lambda x: 2*x
+        def f(x):
+            return x**2 - 4
+
+        def fp(x):
+            return 2*x
 
         # Initial guess
         x0 = 1.5
@@ -188,32 +188,6 @@ class TestCalculusFunctions(unittest.TestCase):
         # Check if the result matches the expected output
         self.assertEqual(result, expected_output)
 
-    # @patch('sys.stdout', new_callable=StringIO)
-    # def test_root_print_step(self, mock_stdout):
-    #     # Call the function with test data
-    #     root_print_step(1, 0.5, 0.1, 0.2)
-
-    #     # Get the printed content from the StringIO object
-    #     printed_output = mock_stdout.getvalue()
-
-    #     # Define the corrected expected output
-    #     expected_output = "    1                  0.5                   0.1                   0.2\n"
-
-    #     # Compare the actual and corrected expected outputs
-    #     self.assertEqual(printed_output, expected_output)
-
-    # @patch("builtins.Exception", side_effect=Exception)  # Mock the built-in Exception class for easier testing
-    # def test_root_max_steps(self, mock_exception):
-    #     algorithm = "Test Algorithm"
-    #     max_steps = 100
-
-    #     with self.assertRaises(Exception) as context:
-    #         root_max_steps(algorithm, max_steps)
-
-    #     self.assertEqual(
-    #         str(context.exception),
-    #         f" {algorithm}: maximum number of steps {max_steps} exceeded\n"
-    #     )
-
 if __name__ == "__main__":
     unittest.main()
+    
