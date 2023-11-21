@@ -5,7 +5,23 @@ import sys
 import cmath
 import numpy as np
 
+#!/usr/bin/env python
+
+import math
+import sys
+import cmath
+import numpy as np
+
 def root_print_header(algorithm, accuracy):
+    """Prints the header for the root finding process.
+
+    Parameters
+    ----------
+    algorithm : str
+        The name of the root finding algorithm used.
+    accuracy : float
+        The requested accuracy for the root finding process.
+    """
     sys.stdout.write("\n ROOT FINDING using " + algorithm +
                      "\n Requested accuracy = " +repr(accuracy) +
                      "\n Step     Guess For Root          Step Size      " +
@@ -14,18 +30,73 @@ def root_print_header(algorithm, accuracy):
                      "  --------------------" + "\n")
 
 def root_print_step(step, x, dx, f_of_x):
+    """Prints the information for each step of the root finding process.
+
+    Parameters
+    ----------
+    step : int
+        The number of the current step.
+    x : float
+        The current guess for the root.
+    dx : float
+        The current step size.
+    f_of_x : float
+        The value of the function at the current guess.
+    """
     sys.stdout.write(repr(step).rjust(5))
     for val in [x, dx, f_of_x]:
         sys.stdout.write("  " + repr(val).ljust(20))
     sys.stdout.write("\n")
 
 def root_max_steps(algorithm, max_steps):
+    """Raises an exception when the maximum number of steps is exceeded.
+
+    Parameters
+    ----------
+    algorithm : str
+        The name of the root finding algorithm used.
+    max_steps : int
+        The maximum number of steps allowed.
+
+    Raises
+    ------
+    Exception
+        When the maximum number of steps is exceeded.
+    """
     raise Exception(" " + algorithm + ": maximum number of steps " +
                     repr(max_steps) + " exceeded\n")
 
 def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
-    """Return root of f(x) given guess x and step dx with specified accuracy.
-    Step must be in direction of root: dx must have same sign as (root - x).
+    """Returns the root of f(x) given a guess x and a step dx with specified accuracy.
+
+    Parameters
+    ----------
+    f : function
+        The function to find the root of.
+    x : float
+        The initial guess for the root.
+    dx : float
+        The initial step size. Must have the same sign as (root - x).
+    accuracy : float, optional
+        The requested accuracy for the root finding process. Default is 1.0e-6.
+    max_steps : int, optional
+        The maximum number of steps allowed. Default is 1000.
+    root_debug : bool, optional
+        Whether to print the information for each step. Default is False.
+
+    Returns
+    -------
+    x : float
+        The final guess for the root.
+    iterations : numpy.array
+        An array of the guesses and function values for each step.
+    step : int
+        The number of steps taken.
+
+    Raises
+    ------
+    Exception
+        When the maximum number of steps is exceeded.
     """
     f0 = f(x)
     fx = f0
@@ -50,9 +121,36 @@ def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
     return x,np.array(iterations), step
 
 def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False):
-    """Return root of f(x) in bracketed by x1, x2 with specified accuracy.
-    Assumes that f(x) changes sign once in the bracketed interval.
-    Uses bisection root-finding algorithm.
+    """Returns the root of f(x) in the interval bracketed by x1 and x2 with specified accuracy.
+
+    Parameters
+    ----------
+    f : function
+        The function to find the root of.
+    x1 : float
+        The lower bound of the interval. Must have opposite sign of f(x2).
+    x2 : float
+        The upper bound of the interval. Must have opposite sign of f(x1).
+    accuracy : float, optional
+        The requested accuracy for the root finding process. Default is 1.0e-6.
+    max_steps : int, optional
+        The maximum number of steps allowed. Default is 1000.
+    root_debug : bool, optional
+        Whether to print the information for each step. Default is False.
+
+    Returns
+    -------
+    x_mid : float
+        The final guess for the root.
+    iterations : numpy.array
+        An array of the guesses and function values for each step.
+    step : int
+        The number of steps taken.
+
+    Raises
+    ------
+    Exception
+        When f(x1) * f(x2) > 0.0 or when the maximum number of steps is exceeded.
     """
     iterations = []
     f1 = f(x1)
