@@ -1,3 +1,21 @@
+"""
+calculus.py
+
+This library provides functions for numerical integration and root-finding algorithms.
+
+Functions:
+- simpson(f, a, b, n): Approximates the definite integral of a function using composite Simpson's rule.
+- trapezoid(f, a, b, n): Approximates the definite integral of a function using composite trapezoidal rule.
+- adaptive_trapezoid(f, a, b, acc, output=False): Uses adaptive trapezoidal method to compute the definite integral.
+- root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False): Returns the root of a function using simple search with step halving.
+- root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False): Returns the root of a function using bisection search.
+- root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False): Returns the root of a function using the secant algorithm.
+- root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False): Returns the root of a function using the Newton-Raphson (tangent) algorithm.
+- root_print_header(algorithm, accuracy): Prints the header for root-finding algorithms.
+- root_print_step(step, x, dx, f_of_x): Prints the details of each iteration step in root-finding algorithms.
+- root_max_steps(algorithm, max_steps): Raises an exception when the maximum number of steps is exceeded.
+
+"""
 import math
 import sys
 import cmath
