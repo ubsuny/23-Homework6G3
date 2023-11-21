@@ -6,8 +6,8 @@ import unittest
 import sys
 from io import StringIO
 from calculus import (
-    simpson, trapezoid, adaptive_trapezoid, 
-    root_simple, root_bisection, root_secant, 
+    simpson, trapezoid, adaptive_trapezoid,
+    root_simple, root_bisection, root_secant,
     root_tangent, root_print_header
 )
 
@@ -15,7 +15,7 @@ class TestCalculusFunctions(unittest.TestCase):
     """
     Test various functions from the calculus module.
     """
-    
+
     def test_simpson_known_integral(self):
         """Test the simpson function with a known integral."""
         # Define the integrand function
@@ -40,7 +40,7 @@ class TestCalculusFunctions(unittest.TestCase):
 
     def test_trapezoid_known_integral(self):
         """Test the trapezoid function with a known integral."""
-    
+
         # Define the integrand function
         def f(x):
             return x**3
@@ -48,7 +48,7 @@ class TestCalculusFunctions(unittest.TestCase):
         # Integration limits
         a = 0
         b = 1
-  
+
         # Number of subintervals
         n = 100
 
@@ -190,3 +190,4 @@ class TestCalculusFunctions(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    
