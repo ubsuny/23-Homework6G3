@@ -3,6 +3,7 @@ import math
 import sys
 import cmath
 import numpy as np
+import matplotlib.pyplot as plt
 
 def root_print_header(algorithm, accuracy):
     """Prints the header for the root finding process.
@@ -308,3 +309,50 @@ def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
             root_print_step(step, x0, dx, f0)
             iterations.append([x0,f0])
     return x0, np.array(iterations), num_steps # Return the final outputs
+
+# Define a function to plot a function
+def plot_function(f, x1, x2, name):
+   """Plots a function f(x) on a given interval [x1, x2] and saves it as a .png file.
+
+    Args:
+        f (function): The function to be plotted.
+        x1 (float): The lower bound of the interval.
+        x2 (float): The upper bound of the interval.
+        name (str): The name of the function and the file.
+
+    Returns:
+        matplotlib.pyplot: The pyplot object that contains the plot.
+
+    """
+    # Create an array of x values
+    xvals = np.linspace(x1, x2, 1000)
+
+    # Compute the corresponding y values
+    yvals = f(xvals)
+    y3vals = np.zeros(len(xvals)) # Create an array of zeros
+
+    # Plot the function
+    plt.plot(xvals, yvals)
+    plt.plot(xvals, y3vals, color='red') # Plot the line y=0 in red
+
+    # Set the labels for x and y axes
+    plt.xlabel("x")
+    plt.ylabel(f'{name}') # Change the y label to match the function
+
+    # Create an array of x tick values
+    xticks = np.arange(-5*np.pi, 5*np.pi + np.pi/2, np.pi/2)
+
+    # Create an array of x tick labels
+    xticklabels = [r'$-5\pi$', r'$-9\pi/2$', r'$-4\pi$', r'$-7\pi/2$', r'$-3\pi$', r'$-5\pi/2$', r'$-2\pi$', r'$-3\pi/2$', r'$-\pi$', r'$-\pi/2$', r'$0$', r'$\pi/2$', r'$\pi$', r'$3\pi/2$', r'$2\pi$', r'$5\pi/2$', r'$3\pi$', r'$7\pi/2$', r'$4\pi$', r'$9\pi/2$', r'$5\pi$']
+
+    # Set the ticks for x axis in terms of pi
+    plt.xticks(xticks, xticklabels)
+
+    # Set the limits for x and y axis
+    plt.xlim(-2*np.pi/2, 2*np.pi)
+    plt.ylim(-10, 10) # Add this line
+
+    # Save the plot as a .png file
+    plt.savefig(f'{name}.png'); # Use f-string syntax and add a semicolon
+    # Return the plt object
+    return plt
