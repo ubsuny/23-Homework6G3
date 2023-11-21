@@ -47,7 +47,7 @@ def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
         if root_debug:
             root_print_step(step, x, dx, fx)
             iterations.append([x,fx])
-    return x,np.array(iterations)
+    return x,np.array(iterations), step
 
 def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False):
     """Return root of f(x) in bracketed by x1, x2 with specified accuracy.
@@ -88,7 +88,7 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
         if root_debug:
             root_print_step(step, x_mid, dx, f_mid)
             iterations.append([x_mid,f_mid])
-    return x_mid,np.array(iterations)
+    return x_mid,np.array(iterations), step
 
 def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20,root_debug=False):
     """Return root of f(x) given guesses x0 and x1 with specified accuracy.
@@ -98,16 +98,17 @@ def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20,root_debug=False):
     f0 = f(x0)
     dx = x1 - x0
     step = 0
+    num_steps = 0 # Add a variable to store the number of steps
     if root_debug:        
         root_print_header("Secant Search", accuracy)
         root_print_step(step, x0, dx, f0)
         iterations.append([x0,f0])
     if f0 == 0:
-        return x0
+        return x0, np.array(iterations), num_steps # Return x0 as the root and the number of steps
     while abs(dx) > abs(accuracy):
         f1 = f(x1)
         if f1 == 0:
-            return x1
+            return x1, np.array(iterations), num_steps # Return x1 as the root and the number of steps
         if f1 == f0:
             raise Exception("Secant horizontal f(x0) = f(x1) algorithm fails")
         dx *= - f1 / (f1 - f0)
@@ -115,12 +116,13 @@ def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20,root_debug=False):
         f0 = f1
         x1 += dx
         step += 1
+        num_steps += 1 # Increment the number of steps by one
         if step > max_steps:
             root_max_steps("root_secant", max_steps)
         if root_debug:
             root_print_step(step, x1, dx, f1)
             iterations.append([x1,f1])
-    return x1,np.array(iterations)
+    return x1, np.array(iterations), num_steps # Return the final outputs
 
 def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
     """Return root of f(x) with derivative fp = df(x)/dx
@@ -134,12 +136,14 @@ def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
         raise Exception(" root_tangent df/dx = 0 algorithm fails")
     dx = - f0 / fp0
     step = 0
+    num_steps = 0 # Add a variable to store the number of steps
     if root_debug:
         root_print_header("Tangent Search", accuracy)
         root_print_step(step, x0, dx, f0)
         iterations.append([x0,f0])
+    # Check if f(x0) is zero
     if f0 == 0.0:
-        return x0
+        return x0, np.array(iterations), num_steps # Return x0 as the root and the number of steps
     while True:
         fp0 = fp(x0)
         if fp0 == 0.0:
@@ -148,11 +152,12 @@ def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
         x0 += dx
         f0 = f(x0)
         if abs(dx) <= accuracy or f0 == 0.0:
-            return x0
+            return x0, np.array(iterations), num_steps # Return the root, the iterations, and the number of steps
         step += 1
+        num_steps += 1 # Increment the number of steps by one
         if step > max_steps:
             root_max_steps("root_tangent", max_steps)
         if root_debug:
             root_print_step(step, x0, dx, f0)
             iterations.append([x0,f0])
-    return x0
+    return x0, np.array(iterations), num_steps # Return the final outputs
