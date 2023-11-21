@@ -146,6 +146,71 @@ def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
             iterations.append([x,fx])
     return x,np.array(iterations)
 
+def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False):
+    """
+    Return the root of the function f(x) within the interval [x1, x2] with the specified accuracy.
+
+    Parameters:
+    - f: function
+        The function for which the root is to be found.
+    - x1, x2: float
+        The interval [x1, x2] in which the root is to be found. Assumes that f(x) changes sign within this interval.
+    - accuracy: float, optional (default=1.0e-6)
+        The desired accuracy for the root.
+    - max_steps: int, optional (default=1000)
+        The maximum number of iterations allowed.
+    - root_debug: bool, optional (default=False)
+        If True, print debugging information for each iteration.
+
+    Returns:
+    - x_root: float
+        The estimated root of the function f(x) within the specified interval.
+    - iterations: numpy.ndarray, shape (n, 2)
+        An array containing the iterations during the root-finding process. Each row represents [x, f(x)].
+
+    Raises:
+    - Exception:
+        If f(x1) * f(x2) > 0.0, indicating that there is no root within the specified interval.
+        If the maximum number of steps is reached.
+
+    """
+    iterations = []
+    f1 = f(x1)
+    f2 = f(x2)
+    if f1 * f2 > 0.0:
+        raise Exception("f(x1) * f(x2) > 0.0")
+    x_mid = (x1 + x2) / 2.0
+    f_mid = f(x_mid)
+    dx = x2 - x1
+    step = 0
+    if root_debug:
+        iterations = []
+        root_print_header("Bisection Search", accuracy)
+        root_print_step(step, x_mid, dx, f_mid)
+        iterations.append([x_mid,f_mid])
+    while abs(dx) > accuracy:
+        if f_mid == 0.0:
+            dx = 0.0
+        else:
+            if f1 * f_mid > 0:
+                x1 = x_mid
+                f1 = f_mid
+            else:
+                x2 = x_mid
+                f2 = f_mid
+            x_mid = (x1 + x2) / 2.0
+            f_mid = f(x_mid)
+            dx = x2 - x1
+        step += 1
+        if step > max_steps:
+            warning = "Too many steps (" + repr(step) + ") in root_bisection"
+            raise Exception(warning)
+        if root_debug:
+            root_print_step(step, x_mid, dx, f_mid)
+            iterations.append([x_mid,f_mid])
+    return x_mid, np.array(iterations)
+
+
 def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False):
     """Return root of f(x) given guesses x0 and x1 with specified accuracy.
     Uses secant root-finding algorithm.
