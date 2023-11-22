@@ -192,7 +192,13 @@ Code linting and testing can be done automatically with GitHub Actions. By doing
 
 ![Alt text](images/pylint3.png)
 
-## Bibliography:
+- For the pytest of [test_calculus.py](https://github.com/ubsuny/23-Homework6G3/blob/main/test_calculus.py), the [unittesting_pytest.yml](https://github.com/ubsuny/23-Homework6G3/blob/main/.github/workflows/unittesting_pytest.yml) is generated and the pytest is satisfied in one attempt.
+ ![Alt text](images/pytest_hw6G3_test_calculus.png)
+
+ # Unit test for Functions in `calculus.py`:
+The unit test cases for several functions in `calculus.py` can be found in [test_calculus.py](https://github.com/ubsuny/23-Homework6G3/blob/main/test_calculus.py).
+
+# Bibliography:
 - [NumPy Documentation]( https://numpy.org/doc/stable/)
 - [Wikipedia: Simpson's Rule]( https://en.wikipedia.org/wiki/Simpson%27s_rule)
 - [Wikipedia: Trapezoidal Rule]( https://en.wikipedia.org/wiki/Trapezoidal_rule)
