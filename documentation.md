@@ -84,6 +84,10 @@ def adaptive_trapezoid(f, a, b, acc, output=False):
     return h * s
 ```
 
+## References
+
+https://github.com/ubsuny/CompPhys/blob/main/Calculus/
+
 This function uses an adaptive trapezoidal method to compute the definite integral of `f` from `a` to `v` to a desired accuracy acc.
 The algorithm starts with a single trapezoid and iteratively doubles the number of subintervals until the desired accuracy is achieved.
 The variable output controls whether intermediate results are printed.
