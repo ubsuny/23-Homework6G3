@@ -174,5 +174,14 @@ def adaptive_trapezoid(f, a, b, acc, output=False):
 | **Reliability**        | Reliable with adaptive refinement                | Reliable and robust, less sensitive to noise            | Generally reliable, suitable for a broader class of functions |
 | **Use Case**           | Adaptive for varying function complexities        | Suitable for smooth functions, simplicity a priority    | Appropriate for functions with curvature or oscillations    |
 
+## Conclusion:
+Since the adaptive trapezoidal approach dynamically modifies the step size to attain the required precision, it is useful when the function being integrated has fluctuating complexities. For basic functions, it could need more iterations than `trapz` and `simps`. 
 
 
+## Bibliography:
+- [NumPy Documentation]( https://numpy.org/doc/stable/)
+- [Wikipedia: Simpson's Rule]( https://en.wikipedia.org/wiki/Simpson%27s_rule)
+- [Wikipedia: Trapezoidal Rule]( https://en.wikipedia.org/wiki/Trapezoidal_rule)
+- [CompPhys Calculus](https://github.com/ubsuny/CompPhys/tree/main/Calculus)
+- [numpy.trapz](https://numpy.org/doc/stable/reference/generated/numpy.trapz.html)
+- [NumPy.org](https://numpy.org/doc/stable/reference/routines.math.html)
