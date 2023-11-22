@@ -177,6 +177,20 @@ def adaptive_trapezoid(f, a, b, acc, output=False):
 ## Conclusion:
 Since the adaptive trapezoidal approach dynamically modifies the step size to attain the required precision, it is useful when the function being integrated has fluctuating complexities. For basic functions, it could need more iterations than `trapz` and `simps`. 
 
+# Docstring Addition to `calculus.py`:
+The [calculus.py](https://github.com/ubsuny/23-Homework6G3/blob/main/calculus.py) has been generated with clear, concise, and informative docstrings that accurately reflect the function's purpose, arguments, return values, and potential limitations.
+
+# GitHub Actions for Calculus.py: Linting and Pytest:
+Code linting and testing can be done automatically with GitHub Actions. By doing this, we can make sure that the code is clear and error-free.
+
+- For linting unit test cases, the [lint_test_calculus.yml](https://github.com/ubsuny/23-Homework6G3/blob/main/.github/workflows/lint_test_calculus.yml) is generated that keeps the trach of unit test and suggests changes accordingly. I have used pylint to lint [test_calculus.py](https://github.com/ubsuny/23-Homework6G3/blob/main/test_calculus.py), and the 10/10 pylint rating is received in 3 attempts.
+**1st attempt**
+![Alt text](images/pylint1.png)
+**2nd attempt**
+![Alt text](images/pylint2.png)
+**3rd attempt**
+
+![Alt text](images/pylint3.png)
 
 ## Bibliography:
 - [NumPy Documentation]( https://numpy.org/doc/stable/)
