@@ -368,38 +368,49 @@ def find_roots(f, a, b, tol):
     roots of a function in a given interval. It also handles the special case of the tan(x) function.
 
     Args:
-        f (function): The function to find the roots of.
-        a (float): The lower bound of the interval.
-        b (float): The upper bound of the interval.
-        tol (float): The tolerance for the root finding.
+    f (function): The function to find the roots of.
+    a (float): The lower bound of the interval.
+    b (float): The upper bound of the interval.
+    tol (float): The tolerance for the root finding.
 
     Returns:
-        int: The number of roots in the interval.
-        list: The list of roots in the interval.
+    int: The number of roots in the interval.
+    list: The list of roots in the interval.
 
     """
     # Find the number of roots in the interval using the sign change method
     n = 0 # Initialize the number of roots
     x = np.linspace(a, b, 100) # Create an array of 100 points in the interval
     y = f(x) # Evaluate the function at the points
+
+    # Check for the root at the lower bound
+    if np.isclose(f(a), 0, atol=tol): # If the function is zero at a
+        n += 1 # Increment the number of roots
+        roots = [a] # Initialize the list of roots with a
+    else:
+        roots = [] # Initialize the list of roots as empty
+
+    # Check for the sign changes in the interior points
     for i in range(len(y)-1):
         if y[i] * y[i+1] < 0: # If there is a sign change between two consecutive points
             n += 1 # Increment the number of roots
-
-    # Find the roots using the brentq function
-    roots = [] # Initialize the list of roots
-    for i in range(len(y)-1):
-        if y[i] * y[i+1] < 0: # If there is a sign change between two consecutive points
             root = opt.brentq(f, x[i], x[i+1], xtol=tol, rtol=tol) # Find the root in the subinterval
             # Check if the function is tan(x)
             if np.isclose(f(root), math.tan(root), atol=tol):
                 # Check if the root is close to an odd number times pi/2
-                if not np.isclose(root % np.pi, np.pi/2, atol=tol):
+                # if not np.isclose(root % np.pi, np.pi/2, atol=tol):
+                if not np.isclose(np.round(2*root/np.pi) % 2, 1, atol=tol): # If the root is not an odd multiple of pi/2
                     roots.append(root) # Append the root to the list
                 else:
                     n -= 1 # Decrement the number of roots
             else:
                 roots.append(root) # Append the root to the list
+
+    # Check for the root at the upper bound
+    if np.isclose(f(b), 0, atol=tol): # If the function is zero at b
+        n += 1 # Increment the number of roots
+        roots.append(b) # Append b to the list of roots
+
     # Return the number and the list of roots
     return n, roots
 
@@ -497,7 +508,9 @@ def efficiency(answers_in_rad, root, algorithms, steps, tolerance):
       r = min(root, key=lambda x: abs(x - answer))
       # Count the digits that are accurate in the answer
       digits = 0
-      for i in range(len(str(answer))):
+      # Find the minimum length of the answer and the root
+      min_len = min(len(str(answer)), len(str(r)))
+      for i in range(min_len):
         # Compare each character in the answer with the corresponding character in the root element
         if str(answer)[i] == str(r)[i]:
           # Increment the digits count
