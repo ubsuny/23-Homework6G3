@@ -1,7 +1,7 @@
 """A script to find and compare the roots of different functions.
-
-This script uses various root finding algorithms from the rootfinding module to find and compare the roots of the tan(x) and tanh(x) functions in a given interval. It plots the functions, prints the roots, and evaluates the efficiency of each algorithm.
-
+This script uses various root finding algorithms from the rootfinding module to\
+find and compare the roots of the tan(x) and tanh(x) functions in a given interval.\
+It plots the functions, prints the roots, and evaluates the efficiency of each algorithm.
 Attributes:
     x1 (float): The lower bound of the interval.
     x2 (float): The upper bound of the interval.
@@ -17,7 +17,7 @@ Attributes:
 """
 from rootfinding import *
 
-# Set the range of x and y values
+# Setting global attributes
 x1, x2 = -np.pi, np.pi
 y3 = 0
 dx = 0.01
