@@ -344,7 +344,10 @@ def plot_function(f, x1, x2, name):
     xticks = np.arange(-5*np.pi, 5*np.pi + np.pi/2, np.pi/2)
 
     # Create an array of x tick labels
-    xticklabels = [r'$-5\pi$', r'$-9\pi/2$', r'$-4\pi$', r'$-7\pi/2$', r'$-3\pi$', r'$-5\pi/2$', r'$-2\pi$', r'$-3\pi/2$', r'$-\pi$', r'$-\pi/2$', r'$0$', r'$\pi/2$', r'$\pi$', r'$3\pi/2$', r'$2\pi$', r'$5\pi/2$', r'$3\pi$', r'$7\pi/2$', r'$4\pi$', r'$9\pi/2$', r'$5\pi$']
+    xticklabels = [r'$-5\pi$', r'$-9\pi/2$', r'$-4\pi$', r'$-7\pi/2$', r'$-3\pi$', r'$-5\pi/2$', \
+                   r'$-2\pi$', r'$-3\pi/2$', r'$-\pi$', r'$-\pi/2$', r'$0$', r'$\pi/2$', r'$\pi$', \
+                   r'$3\pi/2$', r'$2\pi$', r'$5\pi/2$', r'$3\pi$', r'$7\pi/2$', r'$4\pi$', \
+                   r'$9\pi/2$', r'$5\pi$']
 
     # Set the ticks for x axis in terms of pi
     plt.xticks(xticks, xticklabels)
@@ -359,6 +362,22 @@ def plot_function(f, x1, x2, name):
     return plt
 
 def find_roots(f, a, b, tol):
+        """Find the roots of a function in a given interval.
+
+    This function uses the sign change method and the brentq function to find the number and the list of \
+    roots of a function in a given interval. It also handles the special case of the tan(x) function.
+
+    Args:
+        f (function): The function to find the roots of.
+        a (float): The lower bound of the interval.
+        b (float): The upper bound of the interval.
+        tol (float): The tolerance for the root finding.
+
+    Returns:
+        int: The number of roots in the interval.
+        list: The list of roots in the interval.
+
+    """
     # Find the number of roots in the interval using the sign change method
     n = 0 # Initialize the number of roots
     x = np.linspace(a, b, 100) # Create an array of 100 points in the interval
@@ -385,12 +404,37 @@ def find_roots(f, a, b, tol):
     return n, roots
 
 def print_roots(n, root_deg, root, name):
+    """Print the roots of a function in degrees and radians.
+    
+    This function prints the number and the list of roots of a function in degrees and radians, along with the name of the function.
+    
+    Args:
+        n (int): The number of roots.
+        root_deg (list): The list of roots in degrees.
+        root (list): The list of roots in radians.
+        name (str): The name of the function.
+    """
   print(f'      Algorithms for the root of {name}:')
   print("------------------------------------------------")
   print(f'There are {n} actual roots (in degrees), \nthey are: {(root_deg)} \n')
   print(f'There are {n} actual roots (in radians), \nthey are: {(root)} \n')
 
 def print_results(algorithms, functions, arguments):
+    """Print the results of applying different algorithms to different functions.
+
+This function loops over the algorithms, functions, and arguments, and prints the algorithm name, the root in degrees and radians, and the steps required for each function. It also returns the lists of answers in degrees and radians, and the list of steps.
+
+Args:
+    algorithms (list): The list of algorithm names.
+    functions (list): The list of function objects.
+    arguments (list): The list of arguments for each function.
+
+Returns:
+    list: The list of answers in degrees.
+    list: The list of answers in radians.
+    list: The list of steps for each function.
+
+    """
   # Initialize the lists
   answers_in_deg = []
   answers_in_rad = []
@@ -413,12 +457,26 @@ def print_results(algorithms, functions, arguments):
     print(f'root in rad: {answer:.20f} \nsteps required: {step} \n')
     answers_in_deg.append(answer_to_deg)
     steps.append(step)
-
   # Return the lists
   return answers_in_deg, answers_in_rad, steps
 
 # Define a function named efficiency with five parameters
 def efficiency(answers_in_rad, root, algorithms, steps, tolerance):
+    """Evaluate the efficiency of different algorithms for finding roots.
+
+    This function compares the answers, steps, and accuracy of different algorithms for finding the roots of a function. It prints the validity, the number of correct digits, and the efficiency score for each algorithm. It also returns None.
+
+    Args:
+        answers_in_rad (list): The list of answers in radians.
+        root (list): The list of actual roots in radians.
+        algorithms (list): The list of algorithm names.
+        steps (list): The list of steps for each algorithm.
+        tolerance (float): The tolerance for checking the validity and accuracy of the answers.
+
+    Returns:
+        None
+
+    """
   # Create an empty list to store the digits values
   digits_list = []
   # Loop through each element of answers_in_rad and get their indices
