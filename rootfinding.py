@@ -4,6 +4,7 @@ import sys
 import cmath
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.optimize as opt
 
 def root_print_header(algorithm, accuracy):
     """Prints the header for the root finding process.
@@ -312,7 +313,7 @@ def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
 
 # Define a function to plot a function
 def plot_function(f, x1, x2, name):
-   """Plots a function f(x) on a given interval [x1, x2] and saves it as a .png file.
+    """Plots a function f(x) on a given interval [x1, x2] and saves it as a .png file.
 
     Args:
         f (function): The function to be plotted.
@@ -349,10 +350,124 @@ def plot_function(f, x1, x2, name):
     plt.xticks(xticks, xticklabels)
 
     # Set the limits for x and y axis
-    plt.xlim(-2*np.pi/2, 2*np.pi)
+    plt.xlim(x1, x2)
     plt.ylim(-10, 10) # Add this line
 
     # Save the plot as a .png file
     plt.savefig(f'{name}.png'); # Use f-string syntax and add a semicolon
     # Return the plt object
     return plt
+
+def find_roots(f, a, b, tol):
+    # Find the number of roots in the interval using the sign change method
+    n = 0 # Initialize the number of roots
+    x = np.linspace(a, b, 100) # Create an array of 100 points in the interval
+    y = f(x) # Evaluate the function at the points
+    for i in range(len(y)-1):
+        if y[i] * y[i+1] < 0: # If there is a sign change between two consecutive points
+            n += 1 # Increment the number of roots
+
+    # Find the roots using the brentq function
+    roots = [] # Initialize the list of roots
+    for i in range(len(y)-1):
+        if y[i] * y[i+1] < 0: # If there is a sign change between two consecutive points
+            root = opt.brentq(f, x[i], x[i+1], xtol=tol, rtol=tol) # Find the root in the subinterval
+            # Check if the function is tan(x)
+            if np.isclose(f(root), math.tan(root), atol=tol):
+                # Check if the root is close to an odd number times pi/2
+                if not np.isclose(root % np.pi, np.pi/2, atol=tol):
+                    roots.append(root) # Append the root to the list
+                else:
+                    n -= 1 # Decrement the number of roots
+            else:
+                roots.append(root) # Append the root to the list
+    # Return the number and the list of roots
+    return n, roots
+
+def print_roots(n, root_deg, root, name):
+  print(f'      Algorithms for the root of {name}:')
+  print("------------------------------------------------")
+  print(f'There are {n} actual roots (in degrees), \nthey are: {(root_deg)} \n')
+  print(f'There are {n} actual roots (in radians), \nthey are: {(root)} \n')
+
+def print_results(algorithms, functions, arguments):
+  # Initialize the lists
+  answers_in_deg = []
+  answers_in_rad = []
+  steps = []
+
+  # Loop over the algorithms, functions, and arguments
+  for i, (alg, func, args) in enumerate(zip(algorithms, functions, arguments)):
+    # Print the algorithm name, answer, iterations, and step
+    print(f"{i+1}.{alg}")
+    print("------------------")
+
+    # Call the function with the arguments and unpack the results
+    answer, iterations, step = func(*args)
+
+    # Format the answer as a string with 20 decimal places
+    # answer = format(float(answer), ".20f")
+    answers_in_rad.append(answer)
+    answer_to_deg = np.degrees(answer)
+    print(f'root in deg: {answer_to_deg}')
+    print(f'root in rad: {answer:.20f} \nsteps required: {step} \n')
+    answers_in_deg.append(answer_to_deg)
+    steps.append(step)
+
+  # Return the lists
+  return answers_in_deg, answers_in_rad, steps
+
+# Define a function named efficiency with five parameters
+def efficiency(answers_in_rad, root, algorithms, steps, tolerance):
+  # Create an empty list to store the digits values
+  digits_list = []
+  # Loop through each element of answers_in_rad and get their indices
+  for i, answer in enumerate(answers_in_rad):
+    # Get the algorithm name and the number of steps for the current answer
+    alg = algorithms[i]
+    stp = steps[i]
+    # Check if the answer is close to any element in the root list
+    if any(abs(answer - r) < tolerance for r in root):
+      # Print valid and the solution with the algorithm name
+      print(f"The root by {alg} is {answer} is valid with steps {stp}.") 
+      # Find the closest element in the root list to the answer
+      r = min(root, key=lambda x: abs(x - answer))
+      # Count the digits that are accurate in the answer
+      digits = 0
+      for i in range(len(str(answer))):
+        # Compare each character in the answer with the corresponding character in the root element
+        if str(answer)[i] == str(r)[i]:
+          # Increment the digits count
+          digits += 1
+        else:
+          # Break the loop if there is a mismatch
+          break
+      # Print the number of accurate digits
+      if digits == 0:
+        # If correct digits is 0, print all digits are correct
+        print("The number of correct digits is 0 -- almost of the digits are correct.\n") # Merge the two print statements
+      else:
+        # Otherwise, print the number of correct digits
+        print(f"The number of correct digits is {digits}.\n")
+    else:
+      # Print invalid and the solution
+      print(f"The root by {alg} is {answer} is invalid with steps {stp}.\n")
+      # Set the digits value to a large number to indicate invalid answer
+      digits = 9999
+    # Append the digits value to the digits list
+    digits_list.append(digits)
+
+  # Calculate the efficiency for each algorithm using a formula
+  efficiency_list = [steps[i] * 10 + digits_list[i] for i in range(len(algorithms))]
+  # Find the minimum efficiency value
+  efficiency = min(efficiency_list)
+  # Find the index of the minimum efficiency value in the efficiency list
+  index = efficiency_list.index(efficiency)
+  # Access the corresponding search from the search list
+  algorithms = algorithms[index]
+  # Display the output
+  print(f"Among the 4 searches, the efficient search is {algorithms}: "
+      f"\nbecause it has fewer steps {steps[index]}, with a greater accuracy of "
+      f"{digits_list[index]} digits.") 
+  # Return the efficiency value
+  return None
