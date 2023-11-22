@@ -4,21 +4,30 @@ calculus.py
 This library provides functions for numerical integration and root-finding algorithms.
 
 Functions:
-- simpson(f, a, b, n): Approximates the definite integral of a function using composite Simpson's rule.
-- trapezoid(f, a, b, n): Approximates the definite integral of a function using composite trapezoidal rule.
-- adaptive_trapezoid(f, a, b, acc, output=False): Uses adaptive trapezoidal method to compute the definite integral.
-- root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False): Returns the root of a function using simple search with step halving.
-- root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False): Returns the root of a function using bisection search.
-- root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False): Returns the root of a function using the secant algorithm.
-- root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False): Returns the root of a function using the Newton-Raphson (tangent) algorithm.
+- simpson(f, a, b, n): 
+Approximates the definite integral of a function using composite Simpson's rule.
+- trapezoid(f, a, b, n): 
+Approximates the definite integral of a function using composite trapezoidal rule.
+- adaptive_trapezoid(f, a, b, acc, output=False): 
+Uses adaptive trapezoidal method to compute the definite integral.
+- root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False): 
+Returns the root of a function using simple search with step halving.
+- root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False): 
+Returns the root of a function using bisection search.
+- root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False): 
+Returns the root of a function using the secant algorithm.
+- root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False): 
+Returns the root of a function using the Newton-Raphson (tangent) algorithm.
 - root_print_header(algorithm, accuracy): Prints the header for root-finding algorithms.
-- root_print_step(step, x, dx, f_of_x): Prints the details of each iteration step in root-finding algorithms.
-- root_max_steps(algorithm, max_steps): Raises an exception when the maximum number of steps is exceeded.
+- root_print_step(step, x, dx, f_of_x): 
+Prints the details of each iteration step in root-finding algorithms.
+- root_max_steps(algorithm, max_steps): 
+Raises an exception when the maximum number of steps is exceeded.
 
 """
-import math
+#import math
 import sys
-import cmath
+#import cmath
 import numpy as np
 
 def simpson(f, a, b, n):
@@ -78,7 +87,7 @@ def adaptive_trapezoid(f, a, b, acc, output=False):
     n = 1
     s = (f(a) + f(b)) * 0.5
     if output:
-        print("Number of Subintervals (N) = " + str(n + 1) + ", Approximate Integral = " + str(h * s))
+        print(f"Number of Subintervals (N) = {n + 1}, Approximate Integral = {h * s}")
     while abs(h * (old_s - s * 0.5)) > acc:
         old_s = s
         for i in np.arange(n):
@@ -86,7 +95,9 @@ def adaptive_trapezoid(f, a, b, acc, output=False):
         n *= 2.
         h *= 0.5
         if output:
-            print("Number of Subintervals (N) = " + str(n) + ", Approximate Integral = " + str(h * s))
+            print(f"Number of Subintervals (N) = {n + 1}, "
+      f"Approximate Integral = {h * s}")
+
     return h * s
 
 def root_print_header(algorithm, accuracy):
@@ -102,7 +113,7 @@ def root_print_header(algorithm, accuracy):
                      "     Function Value" +
                      "\n ----  --------------------  --------------------" +
                      "  --------------------" + "\n")
-    
+
 def root_print_step(step, x, dx, f_of_x):
     """Prints the details of each iteration step in the root-finding algorithm.
 
@@ -124,7 +135,7 @@ def root_max_steps(algorithm, max_steps):
     - algorithm (str): The name of the root-finding algorithm.
     - max_steps (int): The maximum number of allowed steps.
     """
-    raise Exception(" " + algorithm + ": maximum number of steps " +
+    raise ValueError(" " + algorithm + ": maximum number of steps " +
                     repr(max_steps) + " exceeded\n")
 
 def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
@@ -146,7 +157,7 @@ def root_simple(f, x, dx, accuracy=1.0e-6, max_steps=1000, root_debug=False):
     fx = f0
     step = 0
     iterations = []
-    if root_debug:        
+    if root_debug:
         root_print_header("Simple Search with Step Halving", accuracy)
         root_print_step(step, x, dx, f0)
         iterations.append([x,f0])
@@ -172,7 +183,8 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
     - f: function
         The function for which the root is to be found.
     - x1, x2: float
-        The interval [x1, x2] in which the root is to be found. Assumes that f(x) changes sign within this interval.
+        The interval [x1, x2] in which the root is to be found. 
+        Assumes that f(x) changes sign within this interval.
     - accuracy: float, optional (default=1.0e-6)
         The desired accuracy for the root.
     - max_steps: int, optional (default=1000)
@@ -184,7 +196,8 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
     - x_root: float
         The estimated root of the function f(x) within the specified interval.
     - iterations: numpy.ndarray, shape (n, 2)
-        An array containing the iterations during the root-finding process. Each row represents [x, f(x)].
+        An array containing the iterations during the root-finding process. 
+        Each row represents [x, f(x)].
 
     Raises:
     - Exception:
@@ -196,7 +209,7 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
     f1 = f(x1)
     f2 = f(x2)
     if f1 * f2 > 0.0:
-        raise Exception("f(x1) * f(x2) > 0.0")
+        raise ValueError("f(x1) * f(x2) > 0.0")
     x_mid = (x1 + x2) / 2.0
     f_mid = f(x_mid)
     dx = x2 - x1
@@ -222,7 +235,7 @@ def root_bisection(f, x1, x2, accuracy=1.0e-6, max_steps=1000, root_debug=False)
         step += 1
         if step > max_steps:
             warning = "Too many steps (" + repr(step) + ") in root_bisection"
-            raise Exception(warning)
+            raise ValueError(warning)
         if root_debug:
             root_print_step(step, x_mid, dx, f_mid)
             iterations.append([x_mid,f_mid])
@@ -257,7 +270,7 @@ def root_secant(f, x0, x1, accuracy=1.0e-6, max_steps=20, root_debug=False):
         if f1 == 0:
             return x1
         if f1 == f0:
-            raise Exception("Secant horizontal f(x0) = f(x1) algorithm fails")
+            raise ValueError("Secant horizontal f(x0) = f(x1) algorithm fails")
         dx *= -f1 / (f1 - f0)
         x0 = x1
         f0 = f1
@@ -289,7 +302,7 @@ def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
     f0 = f(x0)
     fp0 = fp(x0)
     if fp0 == 0.0:
-        raise Exception(" root_tangent df/dx = 0 algorithm fails")
+        raise ValueError(" root_tangent df/dx = 0 algorithm fails")
     dx = -f0 / fp0
     step = 0
     if root_debug:
@@ -299,7 +312,7 @@ def root_tangent(f, fp, x0, accuracy=1.0e-6, max_steps=20, root_debug=False):
     while True:
         fp0 = fp(x0)
         if fp0 == 0.0:
-            raise Exception(" root_tangent df/dx = 0 algorithm fails")
+            raise ValueError(" root_tangent df/dx = 0 algorithm fails")
         dx = -f0 / fp0
         x0 += dx
         f0 = f(x0)
