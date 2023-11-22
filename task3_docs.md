@@ -199,6 +199,10 @@ Code linting and testing can be done automatically with GitHub Actions. By doing
 
 ![Alt text](images/pylint_calculus.png)
 
+## After managing all these pylint suggestions, in first attempt, the code got 9.39/10.
+
+![Alt text](images/pylint1_calculus.png)
+
  # Unit test for Functions in `calculus.py`:
 The unit test cases for several functions in `calculus.py` can be found in [test_calculus.py](https://github.com/ubsuny/23-Homework6G3/blob/main/test_calculus.py).
 
