@@ -50,5 +50,5 @@ The following examples demonstrate the application of these integration methods 
   References:
 
 [1.Burden, R. L., & Faires, J. D. (2013). Numerical analysis (9th ed.). Brooks/Cole.](https://faculty.ksu.edu.sa/sites/default/files/numerical_analysis_9th.pdf)
-[2. Press, W. H., Teukolsky, S. A., Vetterling, W. T., & Flannery, B. P. (2007). Numerical recipes in C (3rd ed.). Cambridge University Press.(https://github.com/zhufengGNSS/Numerical-Recipes-1/blob/master/Numerical%20Recipes%20-%20The%20Art%20of%20Scientific%20Computing%20-%203rd%20Edition.pdf)
+[2. Press, W. H., Teukolsky, S. A., Vetterling, W. T., & Flannery, B. P. (2007). Numerical recipes in C (3rd ed.). Cambridge University Press.](https://github.com/zhufengGNSS/Numerical-Recipes-1/blob/master/Numerical%20Recipes%20-%20The%20Art%20of%20Scientific%20Computing%20-%203rd%20Edition.pdf)
 
