@@ -362,79 +362,93 @@ def plot_function(f, x1, x2, name):
     return plt
 
 def find_roots(f, a, b, tol):
-        """Find the roots of a function in a given interval.
+    """Find the roots of a function in a given interval.
 
     This function uses the sign change method and the brentq function to find the number and the list of \
     roots of a function in a given interval. It also handles the special case of the tan(x) function.
 
     Args:
-        f (function): The function to find the roots of.
-        a (float): The lower bound of the interval.
-        b (float): The upper bound of the interval.
-        tol (float): The tolerance for the root finding.
+    f (function): The function to find the roots of.
+    a (float): The lower bound of the interval.
+    b (float): The upper bound of the interval.
+    tol (float): The tolerance for the root finding.
 
     Returns:
-        int: The number of roots in the interval.
-        list: The list of roots in the interval.
+    int: The number of roots in the interval.
+    list: The list of roots in the interval.
 
     """
     # Find the number of roots in the interval using the sign change method
     n = 0 # Initialize the number of roots
     x = np.linspace(a, b, 100) # Create an array of 100 points in the interval
     y = f(x) # Evaluate the function at the points
+
+    # Check for the root at the lower bound
+    if np.isclose(f(a), 0, atol=tol): # If the function is zero at a
+        n += 1 # Increment the number of roots
+        roots = [a] # Initialize the list of roots with a
+    else:
+        roots = [] # Initialize the list of roots as empty
+
+    # Check for the sign changes in the interior points
     for i in range(len(y)-1):
         if y[i] * y[i+1] < 0: # If there is a sign change between two consecutive points
             n += 1 # Increment the number of roots
-
-    # Find the roots using the brentq function
-    roots = [] # Initialize the list of roots
-    for i in range(len(y)-1):
-        if y[i] * y[i+1] < 0: # If there is a sign change between two consecutive points
             root = opt.brentq(f, x[i], x[i+1], xtol=tol, rtol=tol) # Find the root in the subinterval
             # Check if the function is tan(x)
             if np.isclose(f(root), math.tan(root), atol=tol):
                 # Check if the root is close to an odd number times pi/2
-                if not np.isclose(root % np.pi, np.pi/2, atol=tol):
+                # if not np.isclose(root % np.pi, np.pi/2, atol=tol):
+                if not np.isclose(np.round(2*root/np.pi) % 2, 1, atol=tol): # If the root is not an odd multiple of pi/2
                     roots.append(root) # Append the root to the list
                 else:
                     n -= 1 # Decrement the number of roots
             else:
                 roots.append(root) # Append the root to the list
+
+    # Check for the root at the upper bound
+    if np.isclose(f(b), 0, atol=tol): # If the function is zero at b
+        n += 1 # Increment the number of roots
+        roots.append(b) # Append b to the list of roots
+
     # Return the number and the list of roots
     return n, roots
 
 def print_roots(n, root_deg, root, name):
-    """Print the roots of a function in degrees and radians.
-    
-    This function prints the number and the list of roots of a function in degrees and radians, along with the name of the function.
-    
-    Args:
-        n (int): The number of roots.
-        root_deg (list): The list of roots in degrees.
-        root (list): The list of roots in radians.
-        name (str): The name of the function.
-    """
+  """Print the roots of a function in degrees and radians.
+  
+  This function prints the number and the list of roots of a function in degrees \
+  and radians, along with the name of the function.
+  
+  Args:
+      n (int): The number of roots.
+      root_deg (list): The list of roots in degrees.
+      root (list): The list of roots in radians.
+      name (str): The name of the function.
+  """
   print(f'      Algorithms for the root of {name}:')
   print("------------------------------------------------")
   print(f'There are {n} actual roots (in degrees), \nthey are: {(root_deg)} \n')
   print(f'There are {n} actual roots (in radians), \nthey are: {(root)} \n')
 
 def print_results(algorithms, functions, arguments):
-    """Print the results of applying different algorithms to different functions.
+  """Print the results of applying different algorithms to different functions.
 
-This function loops over the algorithms, functions, and arguments, and prints the algorithm name, the root in degrees and radians, and the steps required for each function. It also returns the lists of answers in degrees and radians, and the list of steps.
+  This function loops over the algorithms, functions, and arguments, and prints the \
+  algorithm name, the root in degrees and radians, and the steps required for each \
+  function. It also returns the lists of answers in degrees and radians, and the list of steps.
 
-Args:
+  Args:
     algorithms (list): The list of algorithm names.
     functions (list): The list of function objects.
     arguments (list): The list of arguments for each function.
 
-Returns:
+  Returns:
     list: The list of answers in degrees.
     list: The list of answers in radians.
     list: The list of steps for each function.
 
-    """
+  """
   # Initialize the lists
   answers_in_deg = []
   answers_in_rad = []
@@ -462,21 +476,23 @@ Returns:
 
 # Define a function named efficiency with five parameters
 def efficiency(answers_in_rad, root, algorithms, steps, tolerance):
-    """Evaluate the efficiency of different algorithms for finding roots.
+  """Evaluate the efficiency of different algorithms for finding roots.
 
-    This function compares the answers, steps, and accuracy of different algorithms for finding the roots of a function. It prints the validity, the number of correct digits, and the efficiency score for each algorithm. It also returns None.
+  This function compares the answers, steps, and accuracy of different algorithms \
+  for finding the roots of a function. It prints the validity, the number of correct \
+  digits, and the efficiency score for each algorithm. It also returns None.
 
-    Args:
-        answers_in_rad (list): The list of answers in radians.
-        root (list): The list of actual roots in radians.
-        algorithms (list): The list of algorithm names.
-        steps (list): The list of steps for each algorithm.
-        tolerance (float): The tolerance for checking the validity and accuracy of the answers.
+  Args:
+      answers_in_rad (list): The list of answers in radians.
+      root (list): The list of actual roots in radians.
+      algorithms (list): The list of algorithm names.
+      steps (list): The list of steps for each algorithm.
+      tolerance (float): The tolerance for checking the validity and accuracy of the answers.
 
-    Returns:
-        None
+  Returns:
+      None
 
-    """
+  """
   # Create an empty list to store the digits values
   digits_list = []
   # Loop through each element of answers_in_rad and get their indices
@@ -492,7 +508,9 @@ def efficiency(answers_in_rad, root, algorithms, steps, tolerance):
       r = min(root, key=lambda x: abs(x - answer))
       # Count the digits that are accurate in the answer
       digits = 0
-      for i in range(len(str(answer))):
+      # Find the minimum length of the answer and the root
+      min_len = min(len(str(answer)), len(str(r)))
+      for i in range(min_len):
         # Compare each character in the answer with the corresponding character in the root element
         if str(answer)[i] == str(r)[i]:
           # Increment the digits count
@@ -526,6 +544,6 @@ def efficiency(answers_in_rad, root, algorithms, steps, tolerance):
   # Display the output
   print(f"Among the 4 searches, the efficient search is {algorithms}: "
       f"\nbecause it has fewer steps {steps[index]}, with a greater accuracy of "
-      f"{digits_list[index]} digits.") 
+      f"{digits_list[index]} digits. \n") 
   # Return the efficiency value
   return None
