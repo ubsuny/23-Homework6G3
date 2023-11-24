@@ -1,4 +1,4 @@
-# Numerical Integration Documentation
+# Numerical Integration Documentation [1](https://faculty.ksu.edu.sa/sites/default/files/numerical_analysis_9th.pdf), [2](https://github.com/zhufengGNSS/Numerical-Recipes-1/blob/master/Numerical%20Recipes%20-%20The%20Art%20of%20Scientific%20Computing%20-%203rd%20Edition.pdf)
 
 A short summary of the numerical integration methods implemented in the `calculus.py` module, along with examples of their application to specific functions.
 
@@ -46,4 +46,9 @@ The following examples demonstrate the application of these integration methods 
 - Simpson's Rule: 0.6666666666666661
 
   ![pol](https://github.com/Pranjal-Srivastava-2023/23-Homework6G3/assets/143828394/b197feec-71b3-4bb4-89ab-3e9739750d2b)
+
+  References:
+
+[1.Burden, R. L., & Faires, J. D. (2013). Numerical analysis (9th ed.). Brooks/Cole.](https://faculty.ksu.edu.sa/sites/default/files/numerical_analysis_9th.pdf)
+[2. Press, W. H., Teukolsky, S. A., Vetterling, W. T., & Flannery, B. P. (2007). Numerical recipes in C (3rd ed.). Cambridge University Press.(https://github.com/zhufengGNSS/Numerical-Recipes-1/blob/master/Numerical%20Recipes%20-%20The%20Art%20of%20Scientific%20Computing%20-%203rd%20Edition.pdf)
 
